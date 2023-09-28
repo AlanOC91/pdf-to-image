@@ -1,0 +1,8 @@
+vendor/
+
+# Editor
+.idea/
+
+# Mac OS
+.DS_Store
+/crons/ai/
