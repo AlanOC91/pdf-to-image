@@ -22,6 +22,15 @@ resizeform.addEventListener("submit", (e) => {
     formData.append("page_number", page_number);
     formData.append("file", inputPDF);
 
+    //url is based on convertType selection. pdfToImage is api/convert.php and imageToPdf is api/convert2.php
+    let url = "api/convert.php";
+    let type = 'image';
+    if (document.getElementById("convertType").value === "imageToPdf") {
+        url = "api/convert2.php";
+        type = 'pdf';
+        image_type = 'pdf';
+    }
+
     //Simulate progress bar. We have no way of actually knowing the progress of the conversion so we are just making up a simulation to make it look like it is doing something.
     let progress = 0;
     let progressInterval = setInterval(() => {
@@ -31,7 +40,7 @@ resizeform.addEventListener("submit", (e) => {
         if (progress >= 100) clearInterval(progressInterval);
     }, 1000); //1 second
 
-    fetch("api/convert.php", {
+    fetch(url, {
         method: "POST",
         body: formData
     })
@@ -47,11 +56,18 @@ resizeform.addEventListener("submit", (e) => {
             return response.json(); // Otherwise, just return the parsed JSON as usual
         })
         .then(json => {
-            //Display the image in the preview box
-            let imagePreview = document.createElement("img");
-            imagePreview.src = json.dataUri;
-            imagePreview.style.width = '100%';
-            imagePreviewBox.appendChild(imagePreview);
+
+            if(type === 'image') {
+                //Display the image in the preview box
+                let imagePreview = document.createElement("img");
+                imagePreview.src = json.dataUri;
+                imagePreview.style.width = '100%';
+                imagePreviewBox.appendChild(imagePreview);
+                downloadBtn.innerHTML = "Download Image";
+            }else{
+                //Change download-image button text to Download PDF
+                downloadBtn.innerHTML = "Download PDF";
+            }
 
             //Unhide the preview div containing the image and download button
             previewDiv.classList.remove("d-none");
@@ -80,4 +96,19 @@ resizeform.addEventListener("submit", (e) => {
             errorMsg.classList.remove("d-none");
         });
 
+});
+
+//If #imageToPdf is selected in #convertType then hide #image-return and #page-selection
+let convertType = document.getElementById("convertType");
+let imageReturn = document.getElementById("image-return");
+let pageSelection = document.getElementById("page-selection");
+
+convertType.addEventListener("change", (e) => {
+    if (e.target.value === "imageToPdf") {
+        imageReturn.classList.add("d-none");
+        pageSelection.classList.add("d-none");
+    } else {
+        imageReturn.classList.remove("d-none");
+        pageSelection.classList.remove("d-none");
+    }
 });

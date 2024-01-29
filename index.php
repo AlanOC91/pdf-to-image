@@ -38,12 +38,12 @@
         </g>
 
     </svg>
-    <h1 class="h3 mb-3 font-weight-normal">PDF to Image</h1>
+    <h1 class="h3 mb-3 font-weight-normal">PDF Image Converter</h1>
 
     <!-- Input for the image -->
     <div class="form-group">
         <label for="inputPDF" class="sr-only">PDF</label>
-        <p>Choose a PDF file to convert to an image</p>
+        <p>Choose a file to either convert to an Image or a PDF</p>
 
         <!-- Bootstrap hidden alert for displaying errors -->
         <div class="alert alert-danger d-none" role="alert" id="error-msg"></div>
@@ -52,15 +52,24 @@
     </div>
 
     <div class="form-group">
+        <!-- PDF to Image or Image to PDF Choice -->
+        <label for="convertType">Convert Type</label>
+        <select class="form-control h-100" id="convertType" required>
+            <option value="pdfToImage">PDF to Image</option>
+            <option value="imageToPdf">Image to PDF</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="image-return">
         <!-- Image Return Output (JPG, PNG, etc) -->
         <label for="imageType">Image Return</label>
-        <select class="form-control h-100" id="imageType" required>
+        <select class="form-control h-100" id="imageType">
             <option value="jpg">JPG</option>
             <option value="png">PNG</option>
         </select>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="page-selection">
         <!-- Page Number to Convert (input number) -->
         <label for="pageNumber">Page Number</label>
         <input type="number" id="pageNumber" value="1" min="1" max="9999" step="1" class="form-control"
@@ -85,9 +94,9 @@
         </div>
     </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Convert PDF</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Convert</button>
 
-    <p class="mt-5 mb-3 text-muted">Alan O'Connor &copy; 2023</p>
+    <p class="mt-5 mb-3 text-muted">Alan O'Connor &copy; <?php echo date("Y"); ?></p>
 </form>
 <!-- JS file -->
 <script type="text/javascript" src="./js/app.js" defer></script>
